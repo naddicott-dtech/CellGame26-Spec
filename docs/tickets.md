@@ -1,0 +1,39 @@
+# Planning tickets referred to in these specs
+
+The specs were decided one question at a time in a private planning tracker. It isn't public, so links to it land here instead: each entry gives the ticket's name and where it stood when this snapshot was taken. Where a decision shapes a level, the spec states it.
+
+- <a id="ticket-3"></a>**Catalogue the Baseline mechanics in our own words** (Ticket 3). Resolved.
+- <a id="ticket-11"></a>**Draft the learning targets the game reinforces** (Ticket 11). Resolved.
+- <a id="ticket-12"></a>**Story and cast** (Ticket 12). Resolved.
+- <a id="ticket-13"></a>**Reconcile the Baseline into the v1 level list** (Ticket 13). Resolved.
+- <a id="ticket-14"></a>**Design Field Notes** (Ticket 14). Open: still being decided when this snapshot was taken.
+- <a id="ticket-15"></a>**Define the Session Log and save format** (Ticket 15). Open: still being decided when this snapshot was taken.
+- <a id="ticket-16"></a>**Define the architecture boundaries** (Ticket 16). Resolved.
+- <a id="ticket-60"></a>**Define the shared end-of-level rules: ATP starvation, Dead End and the Restart button** (Ticket 60). Resolved.
+- <a id="ticket-61"></a>**Define how wave grades make the Level Rating** (Ticket 61). Resolved.
+- <a id="ticket-62"></a>**Specify Level 1 — Pseudopod** (Ticket 62). Resolved.
+- <a id="ticket-63"></a>**Specify Level 2 — Nucleus** (Ticket 63). Resolved.
+- <a id="ticket-64"></a>**Specify Level 3 — Membrane** (Ticket 64). Resolved.
+- <a id="ticket-65"></a>**Specify Level 4 — Golgi and lysosomes** (Ticket 65). Resolved.
+- <a id="ticket-66"></a>**Specify Level 5 — Chloroplast** (Ticket 66). Resolved.
+- <a id="ticket-67"></a>**Specify Level 6 — Journey** (Ticket 67). Open: still being decided when this snapshot was taken.
+- <a id="ticket-68"></a>**Specify Level 7 — Cold** (Ticket 68). Open: still being decided when this snapshot was taken.
+- <a id="ticket-69"></a>**Specify Level 8 — Toxin** (Ticket 69). Open: still being decided when this snapshot was taken.
+- <a id="ticket-73"></a>**Script the ground trials: Opening and Levels 1–4 \(through Launch\)** (Ticket 73). Open: still being decided when this snapshot was taken.
+- <a id="ticket-74"></a>**Script the flight: Levels 5–6 and the Arrival cutscene** (Ticket 74). Open: still being decided when this snapshot was taken.
+- <a id="ticket-77"></a>**Prototype Level 1 from its spec on the Bake-off build** (Ticket 77). Resolved.
+- <a id="ticket-79"></a>**Define the shared level defaults and the infrastructure index** (Ticket 79). Resolved.
+- <a id="ticket-80"></a>**Define the loss-screen hint rules and the attempt history they read** (Ticket 80). Open: still being decided when this snapshot was taken.
+- <a id="ticket-82"></a>**Camera zoom, scroll and scripted moves: the shared interaction contract** (Ticket 82). Open: still being decided when this snapshot was taken.
+- <a id="ticket-83"></a>**Action Panel purchases: the shared interaction contract** (Ticket 83). Open: still being decided when this snapshot was taken.
+- <a id="ticket-84"></a>**Virus wave presentation: the shared interaction contract** (Ticket 84). Open: still being decided when this snapshot was taken.
+- <a id="ticket-85"></a>**Verify the mitochondrion's production cycle and check the Starvation warning against it** (Ticket 85). Open: still being decided when this snapshot was taken.
+- <a id="ticket-87"></a>**Group selection and group actions: the shared interaction contract** (Ticket 87). Open: still being decided when this snapshot was taken.
+- <a id="ticket-88"></a>**Organelle Move and Toggle: the shared interaction contract** (Ticket 88). Open: still being decided when this snapshot was taken.
+- <a id="ticket-89"></a>**Validate Level 3's win-impossible predicates and Dead End classification in the build** (Ticket 89). Open: still being decided when this snapshot was taken.
+- <a id="ticket-90"></a>**Evaluate: does membrane resizing justify its teaching time and complexity?** (Ticket 90). Open: still being decided when this snapshot was taken.
+- <a id="ticket-93"></a>**Concurrent waves: presenting and acknowledging waves sent together** (Ticket 93). Open: still being decided when this snapshot was taken.
+- <a id="ticket-94"></a>**Validate Level 4's win-impossible predicates in the build** (Ticket 94). Open: still being decided when this snapshot was taken.
+- <a id="ticket-99"></a>**Validate Level 5's win-impossible predicates in the build** (Ticket 99). Open: still being decided when this snapshot was taken.
+- <a id="ticket-100"></a>**Verify the chloroplast's production cycle** (Ticket 100). Open: still being decided when this snapshot was taken.
+- <a id="ticket-101"></a>**Persistence extension: save the Class Minimum** (Ticket 101). Open: still being decided when this snapshot was taken.
