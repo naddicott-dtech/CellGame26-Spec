@@ -85,7 +85,7 @@ Resolved in [Define the shared end-of-level rules: ATP starvation, Dead End and 
 
 #### ATP Starvation
 
-The Baseline's only automatic ATP drain is membrane self-repair (25 ATP per HP every ~2 s, only while damaged). Purchases are all-or-nothing, so a stuck cell usually sits at a few ATP, not exactly 0. Production comes in bursts: 38 ATP per mitochondrion cycle (~1.5 s), 2 ATP per cytoplasm cycle (~2 s), and slower when a mitochondrion waits on a chloroplast in dim light (~5 s at 20% sunlight, ~10 s at 10%).
+The Baseline's only automatic ATP drain is membrane self-repair (25 ATP per HP every ~2 s, only while damaged). Purchases are all-or-nothing, so a stuck cell usually sits at a few ATP, not exactly 0. Production comes in bursts: 38 ATP per mitochondrion Production Cycle (about 3.2 s: 97 Baseline frames, [verified](tickets.md#ticket-85)), 2 ATP per cytoplasm cycle (~2 s), and slower when a mitochondrion waits on a chloroplast in dim light (~5 s at 20% sunlight, ~10 s at 10%).
 
 - **Starvation Line: 10 ATP.** ATP **below 10** starts the grace. ATP of **10 or more** resets everything, fully. The full reset is a forgiving game rule, not a claim about biology (real cells need production that meets demand, not just any production).
 - **Grace: 3 s.** Nothing shows until ATP has stayed below the line for the grace. Balance Runs cover Level 6 at 20% sunlight and Level 8 at 10%, where slow production can outlast it, and report the warning's transitions and total visible time. Playtests judge whether it reads well.

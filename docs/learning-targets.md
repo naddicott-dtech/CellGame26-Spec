@@ -72,7 +72,7 @@ The instructor's earlier Google Form fits these tiers. Its questions cover:
 
 These rules bind the encyclopedia, tutorials, cutscene scripts, Field Notes and the Recap.
 
-1. **38 ATP stays.** The original game is well balanced, so the number is kept. At the first reveal and in the glossary, a note says: the game uses the older textbook count of 38 ATP per glucose; modern estimates for eukaryotic cells are roughly 30–32. The 38 is described as the yield of the whole respiration pathway (cytoplasm and mitochondrion together), not as ATP made only in the mitochondrion. It is shown as one number, never as +2 and +36.
+1. **38 ATP stays.** The original game is well balanced, so the number is kept. At the first reveal and in the glossary, a note says that 38 ATP per glucose is the older textbook count, and that current estimates for eukaryotic cells are about 30–32. The note stays inside the story and never mentions the game (the teacher, 2026-10-07): for example, "38 is the older textbook count; current estimates for eukaryotic cells are about 30–32." The 38 is described as the yield of the whole respiration pathway (cytoplasm and mitochondrion together), not as ATP made only in the mitochondrion. It is shown as one number, never as +2 and +36.
 2. **Glycolysis wording.** In the Baseline economy, the cytoplasm makes ATP only while the cell has no mitochondrion. That economy is kept. No text says or implies that glycolysis stops once mitochondria arrive. Wording such as "a mitochondrion gets far more ATP from each glucose" is correct in both cases.
 3. **Lipids are not polymers.** Lipids are made *from* fatty acids. Only proteins and nucleic acids are described as chains of monomers. Turning extra glucose into lipids is described as metabolism, which is what it is.
 4. **ATP is a short-term store.** ATP is the energy currency and fat is the longer-term store. The game's ATP ceiling is a game number and is never presented as biology.
@@ -84,6 +84,7 @@ These rules bind the encyclopedia, tutorials, cutscene scripts, Field Notes and 
 8. **No carbohydrate polymer.** Glucose appears only as a monomer. Storing surplus glucose as fat is the game's storage story. Real amoebae also store glycogen, which the instructor can use as a bridge in the Explain phase. No glycogen or starch mechanic is added.
 9. **Hydrogen peroxide, not "free radicals".** The Baseline's green particles are called **hydrogen peroxide** (or "peroxide") everywhere a player sees them: HUD, objectives, tutorials and the encyclopedia. Mitochondria and chloroplasts really do give it off, and peroxisomes really do break it down, so the mechanic stays as it is. The name also explains the organelle: *perox*isomes deal with *perox*ide. The encyclopedia adds that it is one of several *reactive oxygen species*. Its small print notes the simplification: the game shows new peroxisomes budding from the ER, which is one real route; real cells also make them by dividing existing peroxisomes. (Corrected in [Specify Level 3 — Membrane](tickets.md#ticket-64): the game has no Golgi step for peroxisomes.)
 10. **Light is energy, not matter.** Chloroplasts use light *energy* to build glucose from carbon dioxide and water. No text says a chloroplast makes glucose "from light" or "from sunlight" alone.
+11. **Glucose is fuel, not ATP.** Breaking glucose down releases energy that the cell uses to make ATP; glucose never *becomes* ATP. No text says glucose "turns into" or "is converted to" ATP, and no visual morphs glucose into ATP or draws an arrow from one to the other: a gain shows the ATP made and, beside it, the glucose used, as two things (the first student playtest, 2026-10-09: some students wrote that glucose "turned into" ATP; the teacher, 2026-10-10).
 
 ## Misconceptions the game must not reinforce
 
@@ -96,6 +97,7 @@ These rules bind the encyclopedia, tutorials, cutscene scripts, Field Notes and 
 | Game rules are biology | Pseudopod cost formula, pickups that appear only while moving, 100% refunds | Accuracy rule 5 |
 | Organelles come from nowhere | Organelles appear or are absorbed | Accuracy rule 6 |
 | Light turns into sugar (matter from energy) | Chloroplasts appear to make glucose from nothing but light | Accuracy rule 10 |
+| Glucose turns into ATP (matter becoming the energy currency) | A gain appearing as glucose disappears; "+38 ATP" next to a vanishing pickup | Accuracy rule 11 |
 | Harmful chemicals only come from outside the cell | — | The Baseline already gets this right: hydrogen peroxide is a by-product of the cell's own ATP and glucose making. Keep it. |
 
 ## Tie-ins, noted and not chased

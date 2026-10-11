@@ -42,6 +42,7 @@ Resolves [#3](../tickets.md#ticket-3). Terms follow `CONTEXT.md`:
 - I. Corrections from the Level 3 spec
 - J. Corrections from the Level 4 spec
 - K. Corrections from the Level 5 spec
+- L. Corrections from verifying the mitochondrion's cycle
 
 ## 1. Resources and the economy
 
@@ -105,13 +106,13 @@ Source: com/woz/WizardOfOz.as, "goodie" encounter logic; WorldCanvas.as, goodie-
 
 ### 1.3 Conversion rates (metabolism)
 
-Frame timings assume Flash's typical 30 fps. The code comments equate 30 frames with "1 second" (Ribosome.as, Golgi.as, Membrane.as). The stage frame rate is stored in the binary .fla and was not read.
+Frame timings are Baseline frames at **30 fps**. **Corrected (§H, §L):** the Flash document declares 30 fps, and the compiled game's header says 30.0. The code comments also equate 30 frames with "1 second" (Ribosome.as, Golgi.as, Membrane.as).
 
 | Process | Input → output | Rate / condition | Source |
 |---|---|---|---|
-| Mitochondrion, normal | 1 G → **38 ATP** | **Corrected (§H):** not once per 45 frames. The counter must pass 45 frames; then 1 G is charged at the **start**, the processing animation plays with the counter frozen, and 38 ATP is credited at its **end**. The full credit-to-credit cycle is under verification (about 97 frames, ≈3.2 s, from one reading). While toggled on and undamaged | Mitochondrion.as, input/output arrays and produce time; ProducerObject.as, produce loop |
-| Mitochondrion, backup fuel | 1 FA → **108 ATP** | Only when there is no G **and** ATP is below 250 | Mitochondrion.as, alternate-burn override |
-| Cytoplasm "anaerobic" glycolysis | 1 G → **2 ATP** | Once per 60 frames (~2 s), **only when the cell has zero mitochondria** | Cell.as, produce tick |
+| Mitochondrion, normal | 1 G → **38 ATP** | **Verified (§L): a Production Cycle of 97 frames (about 3.23 s), credit to credit,** in two phases. **Counting, 46 frames:** the counter must pass 45; on the 46th frame 1 G is charged. **Processing, 51 frames:** the processing animation plays with the counter frozen, and 38 ATP is credited on its last frame, 51 frames after the charge. **The first cycle** starts from a random count, so the first credit comes 53–97 frames (about 1.8–3.2 s) after the mitochondrion starts counting. While toggled on and undamaged | Mitochondrion.as, input/output arrays, produce time and starting count; ProducerObject.as, produce loop; the processing animation's length (§L) |
+| Mitochondrion, backup fuel | 1 FA → **108 ATP** | Only when there is no G **and** ATP is below 250. The same animation, so the same 97-frame cycle (§L) | Mitochondrion.as, alternate-burn override |
+| Cytoplasm "anaerobic" glycolysis | 1 G → **2 ATP** | **Corrected (§L):** once per 61 frames (the counter must pass 60; about 2.03 s), credited at once with no animation, **only when the cell has zero mitochondria** | Cell.as, produce tick |
 | Surplus glucose → fat | 4 G → **1 FA** | Once per 61 frames (the counter must pass 60), when G exceeds its cap (50) by at least 4 and fat processing is on. **Corrected (§H): fat processing defaults on**, and runs whenever cytoplasm processing is on | Cell.as, glucose-to-FA routine |
 | Surplus glucose burned | 4 G → nothing | Once per 61 frames, when G is over cap and fat processing has been switched off | Cell.as, excess-glucose burn |
 | Chloroplast | nothing → **1 G** | **Corrected (§K):** not once a second. The counter must pass int(30 ÷ sunlight) frames; then the process animation plays with the counter frozen, and 1 G is credited at its **end**: about 31 + 52 ≈ **83 frames per G at sunlight 1** (medium confidence; under verification). At 0 it stops. The 45-frame default is never observable (each chloroplast takes the level's sunlight when created). Costs nothing to run | Chloroplast.as; ProducerObject.as, efficiency setter and produce loop |
@@ -330,7 +331,7 @@ Source: Engine.as, buy/free functions; Cell.as, generate-mRNA and generate-*; Ri
 4. **Refund.** The RNA degrades and returns its NA.
 
 Pipeline notes:
-- **Throughput.** It is limited by the number of free ribosomes, ER docking points and Golgi docking points. There are no explicit build timers beyond the animation and busy times.
+- **Throughput.** It is limited by the number of free ribosomes, ER docking points and Golgi docking points. There are no explicit build timers beyond the animation and busy times. **Those animation timings are in §M** (the ribosome's "about 1 s busy; 5 s timeout" in §3.1 is dead code there).
 - **Hijacking.** Viral RNA uses the same ribosomes (§5), so viruses compete with the player for factories.
 
 ### 3.3 Unlocks
@@ -775,6 +776,7 @@ These are bugs or dead code in the fork. Do not treat them as intended behaviour
 | D25 | **Auto-replace ordered before the dead peroxisome leaves the count.** The replacement is bought, then the dead unit is subtracted from the ordered count. | At the cap of 10 the replacement fails "at maximum", with an alert. A clear failure. | Cell.as, kill peroxisome; Engine.as, replace peroxisome |
 | D26 | **The slot 4 FA tip is wired to any FA shortfall** and never disarmed. | It can show long after Divide, on any purchase refused for FA. Harmless: the tip is true each time. | level_04.xml, FA tip objective |
 | D27 | **Recycling the only chloroplast in slot 4 makes the level unwinnable.** The Divide objective needs 2, and Divide needs a parent. | A soft-lock; S2 is the only guard. | level_04.xml, divide objective; Cell.as, chloro screwed check |
+| D28 | **An interrupted processing animation loses its input.** A producer's output is credited by a script on the processing animation's last frame, and the input was charged when that animation started. Damage, Divide or Recycle plays a different animation, replacing the processing one, so its last frame never plays. (Added, §L.) | The glucose (or FA) is spent and no ATP or heat arrives. Levels 1–2 can't trigger it: nothing there damages the mitochondrion, and Divide and Recycle aren't offered. Level 3's peroxide can damage a processing mitochondrion; Level 4 adds Divide and Recycle; the chloroplast shares the code from Level 5. **Not decided here:** each slice that introduces damage, Divide or Recycle for a producer states what happens to a cycle in progress, as an explicit outcome independent of any animation. | ProducerObject.as, produce loop and finish-process; GameObject.as, play-animation; the damage display routines |
 
 ## G. Corrections from the level-list cross-check
 
@@ -892,3 +894,71 @@ Added 2026-09-29 by [Specify Level 5 — Chloroplast](../tickets.md#ticket-66), 
 - **Endosymbiosis.** The fork has no in-level small print. Its only origin text, an encyclopedia science entry, says "evolved" and wrongly places chloroplasts in "some bacteria"; its dialog says chloroplasts are only in plant cells (algae and other protists have them). None of this is carried over.
 - **Walkthrough cross-check.** The starting FA 10, G 0 and 0 peroxisomes (and ATP 957) disagree with the fork's [1000, 10, 550, 30, 50] and 3 peroxisomes; the fork rules on numbers. The chloroplast menu also has Toggle. The "sun lamp adjusted" is story only. "Half" wrapped is 7 of 15. The walkthrough's open questions are answered: dilution is defensins ÷ nodes (cap 0.5); the chloroplast radical rate is 1 per cycle; the defensin recycle refund is 50 AA + 1 FA for 50 ATP.
 - **New defects:** D25–D27, in §F.
+
+## L. Corrections from verifying the mitochondrion's cycle
+
+Added 2026-09-30 by [Verify the mitochondrion's production cycle](../tickets.md#ticket-85), from the fork's source, its uncompressed Flash library (`cellgame2/LIBRARY`), and a read-only parse of the compiled `cellgame.swf`. The affected sections above are corrected in place and marked "§L". Where this section and an earlier one disagree, this section wins.
+
+- **Frame rate (§1.3, gap B).** 30 fps. The Flash document declares it (§H), and the compiled game's header says 30.0.
+- **How the mitochondrion's cycle runs (§1.3).** Game logic runs once per frame while the level is in play; a tutorial's faux-pause stops it, and every count and animation below with it.
+  - **Counting.** Each frame the counter goes up by 1, but only while the mitochondrion is switched on, undamaged, and not playing a timed animation (processing or dividing). When it passes 45, on the 46th frame, it resets to 0 and tries to charge 1 G. The reset happens even if the charge fails.
+  - **Processing.** A successful charge starts the processing animation. The game steps that animation by hand, one frame per frame of game logic, starting on the frame after the charge. The script that credits 38 ATP sits on the animation's last frame, frame 52, so **the credit comes 51 frames after the charge**. The credit is immediate in the resource totals; the flying icons are only a display.
+  - **Credit to credit: 46 + 51 = 97 frames, about 3.23 s**, while fuel lasts. The old 1.5 s figure was the 45-frame counter alone.
+  - **The first cycle.** Each new mitochondrion, including a daughter from Divide, starts its counter at a random whole number from 0 to 44, each equally likely. Its first charge comes 2–46 frames after it starts counting, and its first credit 53–97 frames after (about 1.8–3.2 s). Several mitochondria therefore produce out of step.
+  - **No fuel.** When the counter fires with no G, and the fat backup doesn't apply, nothing is charged and counting starts again. Glucose that arrives then waits up to 46 frames to be charged.
+  - **Fat backup.** Uses the same animation, so the same 51-frame wait and 97-frame cycle.
+  - **Switched off.** The counter freezes where it is; an animation already running still finishes and credits.
+  - **Divide.** Its animation (40 frames long) also freezes the counter. Starting it during processing is D28.
+- **Cytoplasm glycolysis (§1.3).** 61 frames, not 60 (the counter must pass 60; the same off-by-one as D16), credited at once.
+- **Evidence and confidence.**
+  - *Read directly:* the 45-frame period, the "must pass" test, the reset, the random starting count, the frozen counter during a timed animation, the one-frame-per-frame stepping (fork source); the 52-frame processing animation with its credit script on frame 52 (library).
+  - *Corroborated:* the compiled game has one six-state organelle symbol whose processing clip is 52 frames and divide clip 40, matching the library's mitochondrion. It carries no bytecode, so the script's frame position comes from the library alone.
+  - *Inferred:* the animation isn't stepped on the charge frame, because a listener added while an event is being dispatched isn't called in that dispatch (standard Flash behaviour). How the player orders a frame script within its frame can't move the credit to another frame, so the 97 frames stand either way.
+  - *Not verifiable here:* that the published fork matches the commercial build in the walkthrough, and the frame rate students actually got. The Baseline is counted in frames.
+- **Walkthrough cross-check.** In Level 1, from [02:37] to [03:15], ATP goes 700 → 1005 (+305, 8 credits of 38) while glucose never runs out. The old 1.5 s figure predicts about 25 credits in that window, and 97 frames about 12. The observed 8 is fewer than either. A tutorial hold in the window, a recording below 30 fps, or coarse timestamps could each explain the shortfall, so **the video can't reliably distinguish the two timings**. The fork is the basis for adopting 97 frames.
+- **New defect:** D28 (an interrupted processing animation loses its input), in §F.
+
+## M. Corrections from purchases and production
+
+Added 2026-10-10 by [Build slice: purchases and production](../tickets.md#ticket-120), from a read of the fork's source (`Engine.as`, `Cell.as`, `Ribosome.as`, `RNA.as`, `SlicerEnzyme.as`, `EvilRNA.as`, `PoreMatrix.as`, `Costs.as`, `Act.as`) and the animation timelines in the XFL library (`cellgame2/LIBRARY`, medium confidence, as in §H). Frame counts are Baseline frames at 30 fps. A frame script that fires on timeline index N completes N frames after the animation starts. The build's plan is `docs/plans/purchases-production.md`.
+
+**Buying** (`Engine.as`, the basic-unit purchase; `Costs.as`)
+- Each press asks for a batch of 5 and buys one unit at a time until one fails (D18). Units already bought stay bought.
+- **Checks per unit, in order.** Ribosomes: the ordered count must be below 25, then the nucleolus must have **more than 1** ready pore, then the cost is paid. Slicers: the ordered count must be below 50, then the cost. The slicer's pore check is commented out.
+- **The ordered count** is units ever paid for or started with, less units lost. It never drops when a unit is delivered, only when one dies or is used up. Caps therefore count present plus in-production units (D19).
+- **The pore check reads the ready list as it is at the press.** Pores are taken only when ribosomes are made, on later frames, so every unit of one press sees the same list.
+- Failure alerts: over the cap, "already at the maximum"; can't afford, a "not enough …" message; no nucleolus pore, an empty message (D20).
+- Buy buttons are never greyed out. Affordability is checked only on the press.
+
+**Delivery: the queues** (`Engine.as`, transactions)
+- Each frame releases at most one ribosome and at most one slicer mRNA from the paid queues, starting the frame after the purchase. A ribosome and an mRNA can leave on the same frame.
+
+**Ribosomes** (`Cell.as`, ribosome generation; `PoreMatrix.as`; `Ribosome.as`)
+- Each is made at a random ready nucleolus pore, 10 px above it, and counted on that frame.
+- The pore moves to the busy list without its opening animation, so it never returns (D19).
+- With no ready pore, a random busy pore's spot is used and the lists don't change. There are 24 pores.
+- It grows for **29 frames**. Then it moves to a random spot 90–110 px from the nucleus's centre at **4 px a frame**, at no ATP cost. It arrives within √(2 × 4) px, and only then can it take an mRNA.
+- Ribosomes then stay put. Only the membrane and pseudopods shift them. In the fork they can't be selected.
+
+**Slicers' mRNA** (`Cell.as`, mRNA generation; `RNA.as`; `Ribosome.as`)
+- Each mRNA appears at a random ready nucleus pore, which plays a **47-frame** opening. When an opening ends, the **oldest** busy pore returns to the ready list, not necessarily the one that opened. With no ready pore, a busy pore's spot is used at once and no opening plays.
+- It claims the nearest ribosome that is ready, free and not doomed, at once. With none, it asks again every **61 frames**. With no ribosome at all, the fork alerts.
+- It grows for **35 frames**. Then it travels to its ribosome at **2 px a frame**, re-aiming every 16 frames, and docks within 2 px. The mRNA always travels; the ribosome never comes to it.
+- **44 frames after docking**, on one frame and in this order:
+  1. the slicer is made within 12.5 px of the ribosome (on each axis), and counted;
+  2. the ribosome is free again, where it is;
+  3. the strand breaks down and returns its 1 NT.
+
+  The 44 frames are the strand's 14-frame thread animation and its 30-frame breakdown animation. The 1-frame dock animation is replaced at once.
+- The ribosome's declared busy time (30 frames) and processing timeout (150) are dead code. The only live timeout is the strand's 300-frame docking limit, which can't fire for enzymes.
+
+**Slicers** (`SlicerEnzyme.as`, `EvilRNA.as`, `Cell.as`)
+- A new slicer moves at **3 px a frame** to a random spot 170–205 px from the nucleus's centre and stays there. It doesn't wander. (Its set-up runs twice in the fork; harmless.)
+- **Starting units** (a level's starting ribosomes and slicers) take no pores and play no growth. Each is placed at once on its ring and counted as both ordered and present. A start at or above the cap therefore refuses buying until units are lost.
+- **Hunting.** Viral RNA calls the nearest slicer that has no target on its first frame, then every **16 frames**, so several slicers can converge on one strand. A hunting slicer moves at **3 px a frame**, re-aims every **6 frames**, and cuts within **25 px**.
+- **The cut.** The strand stops at once and plays a 26-frame dying animation, returning 0 NT. The slicer is used up **10 frames** later and refunds its 10 AA, with no ATP. Both the ordered and present counts drop by 1.
+- If its strand goes, every slicer still hunting it moves to a new spot on the ring.
+- Viral RNA can't be cut once it has finished threading at a ribosome (for the viruses slice).
+
+**Animation lengths** (library timelines): nucleus pore opening 47; mRNA growth 35, thread 14, breakdown 30, dying 26; ribosome growth 29, ER dock 29, processing loop 20, recycle 39; slicer used up 10.
+

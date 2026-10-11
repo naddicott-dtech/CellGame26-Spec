@@ -2,7 +2,7 @@
 
 The level-by-level design for CellGame26, a web remake of *CellCraft* used to teach biochemistry and cell biology at d.tech. It's shared as a reference for other people building their own version, and it's full of teacher judgment: what each level must teach, where the original game was changed and why (each change is called a *Deviation* and carries a *Pedagogy Rationale*), and how a level may be won, lost or stuck.
 
-**Snapshot** of commit `feb0559f4e96`, taken 2026-09-29. The specs are still being written: Levels 6–8 aren't specified yet, and open questions are marked as such.
+**Snapshot** of commit `c8b776dd8f60`, taken 2026-10-11. The specs are still being written: Levels 6–8 aren't specified yet, and open questions are marked as such.
 
 ## Start here
 

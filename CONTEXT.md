@@ -50,10 +50,18 @@ _Avoid_: CI, pipeline, smoke test
 The deeper, slower checks a risky change must also pass before it merges, chosen by what the change touches and run on the Mac, with the results attached to the pull request. The full set also runs before every classroom release.
 _Avoid_: Nightly, full suite, extended tests
 
+**Build Slice**:
+One build ticket: a coherent piece of the game that produces something meaningful to verify, executable by an agent without inventing product behaviour. Implementation choices (names, signatures, module layout) stay the builder's. One Build Slice may land as several PRs.
+_Avoid_: Task, story, module (a list of modules is not a list of slices)
+
+**Playable Level**:
+A level whose complete specified behaviour runs on the production architecture, verified in the browser and ready for human playtesting, with its deferred features named. Its scope may be limited; the quality of what it implements is not. A Playable Level is not yet validated for classroom use: that also needs its validation task, the release checks and human playtests.
+_Avoid_: Demo, prototype, vertical slice
+
 ### Game
 
 **Game Shell**:
-The part of the game that decides which screen the player is on: title, level select, cutscene, a level in play, results. It starts a fresh level each time, and it restores the player's progress from their autosave. The Baseline calls it the Director.
+The part of the game that decides which screen the player is on: title, level select, cutscene, a level in play, results. It starts a fresh level each time, and it restores the player's progress from their **Progress Save**. The Baseline calls it the Director.
 _Avoid_: Director, game manager, app
 
 **Pause**:
@@ -97,16 +105,20 @@ While the player drags a pseudopod, the aiming arrow shows how far the current A
 _Avoid_: Range indicator, cost arrow
 
 **Refusal**:
-What happens when the player releases a pull their ATP can't pay for: nothing moves and nothing is spent (the Baseline's all-or-nothing rule), and the game shows why, with the arrow snapping back to the spark, the ATP meter pulsing and a short line naming the cause and the fix. A refusal must read as intentional, never as a bug.
-_Avoid_: Error, failed pull, cancel
+The game declining a player's action and saying why: a pull their ATP can't pay for (nothing moves and nothing is spent, the Baseline's all-or-nothing rule), or a purchase that buys nothing (can't afford, at the maximum, no free pore). Every refusal shares one tone and look: the limiting meter pulses and a short line names the cause and the fix; a pull's arrow also snaps back to the spark. Each keeps its own action and reason, so a pull's behaviour never carries over to a purchase. A refusal must read as intentional, never as a bug.
+_Avoid_: Error, failed pull, failed purchase, cancel
+
+**Partial Fill**:
+A batch purchase that bought some of the units asked for but not all, because a unit failed partway (for example, "Bought 3 of 5 ribosomes: not enough amino acids for the rest"). It is not a Refusal: the units bought are charged and count as a purchase. It reports how many were asked for, how many were bought, and why the rest weren't.
+_Avoid_: Failed batch, partial refusal
 
 **Linger**:
 A short display that stays after the thing it reports has already happened, so it isn't missed or doesn't flicker: the **Completion Linger** (a finished Objective staying on screen before the next begins) and the **Recovery Linger** ("ATP recovering" after a Starvation countdown vanishes). A linger only displays; it never delays the rule behind it.
 _Avoid_: Delay, cooldown
 
-**Fast-forward**:
-On a Restart or a replay, finishing a Story Hold the student has already seen with one tap: its demonstration completes at once, with every effect it causes happening exactly once. A hold not yet seen can't be fast-forwarded.
-_Avoid_: Skip
+**Skip to gameplay**:
+On a Restart or a replay, passing Story Holds the student has already seen with one tap: the named hold closes, then each already-seen hold that opens right behind it, stopping at an unseen hold or at gameplay that needs an action. Each closes as Continue would close it, every effect exactly once, and no gameplay runs. A hold not yet seen can't be skipped. (It replaced *Fast-forward*, which only finished a seen hold's demonstration.)
+_Avoid_: Fast-forward (retired); a bare "Skip", which doesn't say where it goes
 
 **Play Time**:
 The time a student spent actually playing a level: gameplay outside Story Holds and Pause. It is shown quietly on the results screen and never as a running clock or a best time. In-level time (holds included) is a separate measure, used for playtests.
@@ -136,9 +148,17 @@ _Avoid_: NA, nucleic acids (for the resource)
 The panel docked at the bottom of the screen that shows the selected organelle's name, health, one-line description, encyclopedia link and the actions it can take now. Its contents depend on which organelle is selected.
 _Avoid_: Organelle menu, build menu
 
+**Focus Effect**:
+A short procedural animation that draws the eye to a moment the art doesn't cover, such as a ribosome leaving the nucleus through its pore. It's presentation only, has a fixed duration and capped concurrency, and resembles the item's final form (`docs/architecture.md`, *Renderer*).
+_Avoid_: Juice, polish effect
+
 **Tuning**:
 The numbers that set how a level plays: costs, rewards, spawn amounts, wave sizes and timings. They start from the Baseline. Any change a player could feel is a Deviation, and a big change to waves or timing needs a human playtest as well as automated runs.
 _Avoid_: Config, settings, params
+
+**Production Cycle**:
+How often a producer (a mitochondrion, the cytoplasm, a chloroplast) delivers its output: the time between one credit and the next, while it keeps producing uninterrupted with enough input. It says nothing about what happens inside the interval; each producer's phases are its own.
+_Avoid_: Cycle (unqualified), tick, burn rate
 
 **Balance Run**:
 Playing a level automatically, without a screen, many times over, to see how Tuning changes affect things like time to win, resources over time, and losses. It points out problems; it doesn't decide whether a level is balanced for students.
@@ -161,6 +181,10 @@ _Avoid_: Quiz, test, form
 **Class Minimum**:
 The point a student must reach in class: their cell has absorbed its first chloroplast, and they have acknowledged its introduction. Once reached, it is never lost, and the student can hand in their Recap. The class goal is to finish that level too; everything after it is optional challenge. The Recap asks only about what a student has seen by the Class Minimum.
 _Avoid_: Checkpoint, required level, done
+
+**Progress Save**:
+The one versioned record of how far a student has come, kept on the device: the levels they've completed with their best Level Rating, the teaching they've already acknowledged, and the once-per-save cards they've passed. It's what unlocks levels and makes familiar teaching quicker to pass. It survives a reload; "Reset all progress" is the only thing that clears it. It's separate from the Simulation Core's own state snapshot, and from the Session Log.
+_Avoid_: Autosave, save file, save format, checkpoint
 
 **Session Log**:
 The versioned record of what a student did and answered during play, kept on the device, and shaped so it can later be sent to the instructor's sheet.

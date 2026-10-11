@@ -66,7 +66,7 @@ Levels 3 and 4's systems are used unchanged: small-unit recycling, membrane grow
 
 **Open dependencies:**
 - [Verify the chloroplast's production cycle](../tickets.md#ticket-100). The chloroplast's cycle length is **pending verification**. It is never a silently fixed constant: the build slice that implements chloroplast production lists this ticket as a blocker.
-- [Verify the mitochondrion's production cycle and check the Starvation warning against it](../tickets.md#ticket-85), as in Levels 2–4.
+- [Verify the mitochondrion's production cycle](../tickets.md#ticket-85) (the warning check is [its own ticket](../tickets.md#ticket-134)), as in Levels 2–4.
 
 ## Starting state
 
@@ -113,7 +113,7 @@ As Levels 3 and 4 ([`level-4.md`](level-4.md), *When effects happen*): completio
 
 - **Reached when the Chloroplast hold is acknowledged**, not at engulfment: the student has then seen the introduction (`CONTEXT.md`).
 - The core emits **`class_minimum_reached`** on that tick, **only if this save hasn't reached it before**. The persistence adapter writes it **at once**, before anything else can end the attempt, so a refresh, a loss or a Restart afterwards can't lose it ([the persistence extension](../tickets.md#ticket-101)).
-- **Every attempt can earn it until it is saved.** A student who restarts (or loses) before acknowledging the Chloroplast hold earns it at the same point on a later attempt. Once it is saved, a Restart or replay emits nothing. Fast-forwarding the Chloroplast hold still acknowledges it (the shared fast-forward contract).
+- **Every attempt can earn it until it is saved.** A student who restarts (or loses) before acknowledging the Chloroplast hold earns it at the same point on a later attempt. Once it is saved, a Restart or replay emits nothing. Skipping the Chloroplast hold still acknowledges it (the shared skip contract).
 - **No line plays in the level** (`docs/story.md`, rule 9). Level select shows the Recap's copy button from then on.
 
 ### Notes on the beats
@@ -367,7 +367,7 @@ The stuck-state search runs on every Level 5 sweep ([`levels.md`: Testing](../le
 
 ### Unit tests (core)
 
-- the starting state declared in content: menus, units and resources the same on first entry, Restart and replay; **30 ribosomes kept** with the cap refusing only further purchases; actions refused before their Objective is armed, including during the previous completion linger (chloroplast Divide, Auto-replace, Make Defensin, Take Defensin); fast-forward never enabling an action
+- the starting state declared in content: menus, units and resources the same on first entry, Restart and replay; **30 ribosomes kept** with the cap refusing only further purchases; actions refused before their Objective is armed, including during the previous completion linger (chloroplast Divide, Auto-replace, Make Defensin, Take Defensin); skipping never enabling an action
 - the chloroplast: placed when the Start hold closes, at the float-in distance, homing; engulfed at full health; Objective 1 at chloroplasts 0/1
 - the Class Minimum: emitted on acknowledging the Chloroplast hold, not at engulfment, not before; once per save; persisted at once
 - the hold gap between the Chloroplast and Sunlight and peroxide holds, with play running

@@ -61,7 +61,7 @@ Level 3's systems are used unchanged: small-unit recycling, membrane growth and 
 - [Concurrent waves: presenting and acknowledging waves sent together](../tickets.md#ticket-93) extends [the wave presentation contract](../tickets.md#ticket-84). The final attack sends two independent waves at once.
 - Used unchanged: [the camera](../tickets.md#ticket-82), [Action Panel purchases](../tickets.md#ticket-83), [wave presentation](../tickets.md#ticket-84), [group selection and group actions](../tickets.md#ticket-87) (its rule that ATP charged now is shown apart from materials returned later also covers organelle recycling), and [organelle Move and Toggle](../tickets.md#ticket-88) (peroxisome Move uses it).
 
-**Open dependency:** [Verify the mitochondrion's production cycle and check the Starvation warning against it](../tickets.md#ticket-85). The metabolism row, and the peroxide rate that follows from it, aren't build-complete until it's resolved.
+**Open dependency:** [Verify the mitochondrion's production cycle](../tickets.md#ticket-85) (the warning check is [its own ticket](../tickets.md#ticket-134)). The metabolism row, and the peroxide rate that follows from it, aren't build-complete until it's resolved.
 
 ## Starting state
 
@@ -102,7 +102,7 @@ As Level 3 ([`level-3.md`](level-3.md), *When effects happen*): completion effec
 
 ### Notes on the beats
 
-- **Actions are enabled when their Objective is armed** (Buy Lysosome with 3, Recycle on mitochondria and peroxisomes with 6, Divide with 7), and the core refuses each before then, including during the previous Objective's completion linger. Each stays available for the rest of the level. Everything Level 3 taught is available from the first frame (Starting state). **Familiarity never grants an action:** fast-forwarding a hold on a Restart never enables Divide before Objective 7 is armed.
+- **Actions are enabled when their Objective is armed** (Buy Lysosome with 3, Recycle on mitochondria and peroxisomes with 6, Divide with 7), and the core refuses each before then, including during the previous Objective's completion linger. Each stays available for the rest of the level. Everything Level 3 taught is available from the first frame (Starting state). **Familiarity never grants an action:** skipping a hold on a Restart never enables Divide before Objective 7 is armed.
 - **The wrong mitochondrion (Baseline kept).** Recycle is offered on **every** mitochondrion once Objective 6 is armed, and Objective 6 counts mitochondria, so recycling the working one completes it too. The cell then has no ATP income: the damaged one makes nothing, and glycolysis runs only with no mitochondria. The way back is Divide, which has no health check (Baseline): dividing the damaged one gives a full-health daughter, if the student can pay for it. **Clarity comes from presentation, not a restriction:**
   - the damaged mitochondrion must look **unmistakably damaged** at normal gameplay zoom (an art requirement);
   - selecting a mitochondrion shows its condition in the Action Panel;
@@ -319,7 +319,7 @@ The stuck-state search runs on every Level 4 sweep ([`levels.md`: Testing](../le
 
 ### Unit tests (core)
 
-- the starting state declared in content: menus, units and resources the same on first entry, Restart and replay; actions refused before their Objective is armed, including during the previous completion linger (Buy Lysosome, mitochondrion and peroxisome Recycle, Divide); fast-forward never enabling an action
+- the starting state declared in content: menus, units and resources the same on first entry, Restart and replay; actions refused before their Objective is armed, including during the previous completion linger (Buy Lysosome, mitochondrion and peroxisome Recycle, Divide); skipping never enabling an action
 - the damaged mitochondrion: placed when the Start hold closes, at the float-in distance, homing; 10 HP; never producing; staying at 0 HP; Objective 1 at mitochondria 1/2
 - the Golgi's arrival and claim by tap
 - lysosome purchases: per-unit cost, up to 2 per order, partial fills, the cap of 25 counting ordered units; present from grow start, ready at grow end; only ready lysosomes answer a call

@@ -57,7 +57,7 @@ This section links to the shared systems; don't rebuild any of them for this lev
 - [Action Panel purchases: the shared interaction contract](../tickets.md#ticket-83)
 - [Virus wave presentation: the shared interaction contract](../tickets.md#ticket-84)
 
-**Open dependency:** [Verify the mitochondrion's production cycle and check the Starvation warning against it](../tickets.md#ticket-85). The metabolism row of the Tuning table isn't build-complete until it's resolved.
+**Open dependency:** [Verify the mitochondrion's production cycle](../tickets.md#ticket-85) (the warning check is [its own ticket](../tickets.md#ticket-134)). The metabolism row of the Tuning table isn't build-complete until it's resolved.
 
 ## Starting state
 
@@ -67,7 +67,7 @@ This section links to the shared systems; don't rebuild any of them for this lev
 | Units | 1 mitochondrion, **selectable but with no actions** (a Deviation; its actions arrive at their own introductions in later levels). The nucleus arrives at beat 1. No ER or Golgi. |
 | World | The same lab petri dish as Level 1, **declared again in Level 2's own content**, not inherited: the **dish radius**, world-fixed bands and a drawn rim, with the cell at the centre. Pulls are clamped by the **edge clamp**. |
 | Membrane | 15 nodes and 100 HP max (**membrane**, Tuning), so the lens is about 1,191 px |
-| Camera | The **starting zoom**. The zoom control is hidden until revealed (beats table); how a hidden control behaves is for the camera ticket. |
+| Camera | The **starting zoom**, following the cell. The zoom tool is hidden until revealed (beats table); every camera input works before then ([shared defaults: The camera](shared-defaults.md#the-camera)). |
 | HUD | The ATP and glucose meters, the Objective pane, Pause and the encyclopedia button from the first frame. The rest appear at their beats. |
 | Pools | The NT, AA and glucose pools (**pools**, Tuning) are **inactive until the nucleus beat**. The fatty-acid pool is never switched on. |
 | Producers | The mitochondrion burns glucose from the start (**metabolism**, Tuning). Cytoplasm glycolysis doesn't run, because the cell has a mitochondrion. **Fat processing is on** (Baseline): surplus glucose becomes fatty acids. Radicals are off. |
@@ -144,10 +144,11 @@ Every number is Tuning. Frame counts are Baseline frames at 30 Hz. The rows mark
 | Membrane | 15 nodes; 100 HP max | Code default (D10) | Unit test |
 | Dish radius | 5,000 px | Baseline (fork boundary) | Unit test |
 | Edge clamp | Centrosome ≤ dish radius − cell radius (4,600 px) | As Level 1; provisional | Boundary invariant |
-| Starting zoom | Scale 0.2 | Baseline | — |
-| Scripted zoom 1 | Scale 0.6 over 15 frames, then a scroll to the nucleus | Baseline | Camera ticket |
-| Scripted zoom 2 | Scale 0.8 over 45 frames, then a scroll to the nucleus | Baseline | Camera ticket |
-| Wave zoom-out | To scale 0.2 over 30 frames, only when no wave is active and the camera is zoomed in further | Baseline | Camera ticket |
+| Starting zoom | Scale **0.4** (candidate) | Deviation from the Baseline's 0.2, following Level 1's 0.4 (appendix) | The camera pass |
+| Scripted zoom 1 | Scale **1.2** (candidate) over 15 frames, then a scroll to the nucleus | Baseline's 0.6 × 2 (appendix); timing Baseline | The camera pass |
+| Scripted zoom 2 | Scale **1.6** (candidate) over 45 frames, then a scroll to the nucleus | Baseline's 0.8 × 2 (appendix); timing Baseline | The camera pass |
+| Wave zoom-out | To scale **0.4** (candidate) over 30 frames, only when no wave is active and the camera is zoomed in further; the zoom only, not the centre | Baseline's 0.2 × 2 (appendix); timing Baseline | The camera pass |
+| Player zoom range; scripted maximum; steps | **0.2–4.2**; scripted zooms clamped to **3.8**; zoom tool ± **0.08** a step, wheel **0.16** a notch (all candidates) | The Baseline's 0.1–2.1, 1.9, 0.04 and 0.08, × 2 (appendix) | The camera pass; the Chromebook control check |
 | Pools | NT 50 at 0.05; AA 50 at 0.1; G 50 at 0.2. FA declared, never active. | Baseline | Resource-acquisition runs |
 | Regrowth interval; roll distance | 16 frames; 72 px | Baseline effective timing (D16) | Unit test; resource-acquisition runs |
 | Gem values | NT 1, AA 50, G 2 base; 70% ×1, 25% ×2, 5% ×4; collision radius 25 px | Baseline | Unit test |
@@ -165,7 +166,7 @@ Every number is Tuning. Frame counts are Baseline frames at 30 Hz. The rows mark
 | Alert duration | About 60 frames from the send | Baseline (the virus panel's glow) | Unit test |
 | Wave rewards | Wave 1: 25 AA. Wave 2: 75 AA. No NT or FA. Credited once when the defeated card is acknowledged. | Baseline | Unit test |
 | Repair cost; repair interval | 25 ATP per HP; 61 frames | Baseline (D16 family) | Unit test |
-| Metabolism | 38 ATP per G. **Fat-backup yield** 108 ATP per FA, when G < 1 and ATP is below the **fat-backup ceiling** of 250. **The cycle length is open** ([the timing ticket](../tickets.md#ticket-85)); don't use the old 1.5 s estimate. | Baseline | Unit test, after the ticket |
+| Metabolism | 38 ATP per G. **Fat-backup yield** 108 ATP per FA, when G < 1 and ATP is below the **fat-backup ceiling** of 250. **Production Cycle:** 97 frames credit to credit (46 counting, then 51 from charge to credit), with a random first cycle ([catalogue §1.3, §L](../research/baseline-mechanics.md#13-conversion-rates-metabolism)). | Baseline | Unit test |
 | Fat threshold; surplus amount; surplus interval | G ≥ 54 (the cap 50 plus 4); 4 G into 1 FA; 61 frames | Baseline | Unit test |
 | Starvation, lingers, nudges, touch | The shared values; **no overrides** | [Shared Tuning](shared-defaults.md#tuning) | — |
 
@@ -224,6 +225,24 @@ Every number is Tuning. Frame counts are Baseline frames at 30 Hz. The rows mark
 | Membrane damaged, ATP ≥ the repair cost | Repair spends ATP and can push it below the line. Below the repair cost, repair pauses, and further escapes risk **lysis**. |
 | A wave under way, no more slicers affordable | Existing slicers may be enough. If they aren't, escapes double and the attempt ends in **lysis or Starvation**. |
 | At the dish's edge | Inward pulls work; a roll outside the dish makes no gem and costs the pool nothing (D15). |
+
+### The camera pass and the Chromebook control check
+
+The camera numbers are **candidates** until these checks pass. The results are recorded as Tuning, with any Deviation, in this spec. Each is one planned exercise, with targeted rechecks after a correction.
+
+**The camera pass** is headed, on the M1, for framing and layout only. It never judges how input feels. It checks against the teacher's criteria:
+- **Starting view:** the cell is readable, movement is understandable, and there is useful space around it.
+- **Fully zoomed out:** students can explore and find resources while some mystery remains. Resources should usually look as if they were already there, not visibly sprinkled into existence; occasional exceptions are acceptable.
+  - The direct check: pan and zoom out just before a pool or ring spawn.
+  - If spawning shows, **report it** before changing placement or timing, which would go beyond camera tuning.
+- **Fully zoomed in:** organelle positions can be inspected, organelles selected reliably, and the results of commands seen.
+- **Scripted close-ups:** clearly show what is being explained, without the subject clipped behind the HUD or the dialogue.
+- **Wave framing:** useful awareness of the threat. It needn't equal the starting zoom for numbers' sake.
+
+**The Chromebook control check** is hand-run on a classroom Chromebook, because the M1 can't show how the controls feel there. It covers:
+- the wheel or two-finger scroll, a pinch, the zoom bar and the ± ends: each controllable across the whole range;
+- accidental zooming;
+- near-miss presses that pan instead of pulling.
 
 ### Balance Runs
 
@@ -307,7 +326,8 @@ The stuck-state search runs on every Level 2 sweep ([`levels.md`: Testing](../le
 | **No mitochondrion actions in Level 2.** The fork exposes Move, Toggle, Recycle and Divide here, so hiding them is a deliberate restriction, not preservation; the walkthrough doesn't show whether the commercial game exposed them. | Follows our established teaching sequence and keeps Level 2 focused. An untaught Toggle can silently stop the cell's only ATP source in the first level where Starvation can end it. |
 | **Partial fills are reported honestly and count** (D18). The fork bought the partial batch, showed "can't afford" and didn't count the purchase. | The student sees what was actually bought and why the rest wasn't, and an order that happened is never missed by the Objective. The purchasing opportunities are the Baseline's. |
 | **The "See if any viruses got in" Objective is dropped;** its moment becomes the Viral defence hold. | The Objective only waited for the alert; the teaching beat opens at the same moment. |
-| **Hover-triggered cost cards** are replaced by the Action Panel ticket's trigger, keeping their prerequisites (≥ 5 ribosomes; ≥ 5 slicers). | Touch input must work (standing rule). |
+| **Hover-triggered cost cards** become an always-visible batch-cost line under each action ([shared defaults: Action Panel purchases](shared-defaults.md#action-panel-purchases)), keeping their prerequisites (≥ 5 ribosomes; ≥ 5 slicers). | Touch input must work (standing rule), and the cost stays in view at the moment of choosing. |
+| **Every camera scale is the Baseline's × 2, as candidates** (Tuning: starting zoom, scripted zooms, wave zoom-out, range and steps). Timings are unchanged. | Level 1's reason: the Baseline's numbers framed a 640 × 480 stage, and on today's screens they leave the cell too small to read. Doubling keeps the Baseline's proportions between zooms; it doesn't prove identical framing on every screen, so the values stay candidates until the camera pass (Verification). |
 
 The Deviations shared by every level also apply, including **Nucleotides (NT)** in place of the Baseline's "NA" (`docs/levels.md`).
 
